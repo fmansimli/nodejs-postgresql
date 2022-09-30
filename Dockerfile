@@ -12,6 +12,8 @@ COPY . .
 
 EXPOSE 3030
 
+ENV PORT=3030
+
 RUN yarn build-image
 
 CMD ["yarn","serve:pm2"]
