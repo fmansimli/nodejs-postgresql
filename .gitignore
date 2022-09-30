@@ -49,6 +49,9 @@ dist/
 build/
 /build
 
+.vscode/
+.idea/
+
 # TypeScript v1 declaration files
 typings/
 
