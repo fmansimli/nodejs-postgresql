@@ -12,3 +12,6 @@ dist/
 
 /tests
 tests/
+
+/sql
+sql/
