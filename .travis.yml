@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - 16
+services:
+  - mongodb
+cache:
+  directories:
+    - node_modules
+before_install:
+  - yarn install
+script:
+  - yarn test-babel-dev
+  - yarn lint
+env:
+  - NODE_ENV=production
+  - DB=mongodb
+  - PACKAGE_VERSION="1.0.*"

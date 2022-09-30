@@ -1,0 +1,57 @@
+{
+  "name": "node-with-typescript",
+  "version": "1.0.0",
+  "description": "this is nodejs, express app with typescript",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "inspect": "node inspect dist/server.js",
+    "serve": "node dist/server.js",
+    "serve:pm2": "pm2 start dist/server.js -i 0",
+    "build": "tsc",
+    "clean-dist": "rm -rf dist/",
+    "clean-full": "rm -rf dist/ && rm -rf node_modules/",
+    "env": "export NODE_ENV=production",
+    "start": "yarn clean-dist && tsc && yarn serve",
+    "start:pm2": "yarn clean-dist && tsc && yarn remove-dev && yarn serve:pm2",
+    "build-image": "yarn clean-dist && tsc && yarn remove-dev",
+    "test": "vitest",
+    "pm2:stop": "pm2 list",
+    "remove-dev-libs": "yarn remove nodemon supertest ts-node typescript vitest",
+    "remove-dev-types": "yarn remove @types/cors @types/express @types/jsonwebtoken @types/morgan  @types/supertest",
+    "remove-dev-eslint": "yarn remove eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser @types/node",
+    "remove-dev": "yarn remove-dev-libs && yarn remove-dev-types && yarn remove-dev-eslint"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "express"
+  ],
+  "author": "Farid Mansimli",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "helmet": "^5.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "redis": "^4.3.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^18.7.6",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
+    "eslint": "^8.22.0",
+    "nodemon": "^2.0.19",
+    "supertest": "^6.2.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4",
+    "vitest": "^0.23.4"
+  }
+}
