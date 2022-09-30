@@ -1,25 +1,25 @@
-mypc >> docker run --name postgresCont -p 5432:5432 -e POSTGRES_PASSWORD=12345 -d postgres
-mypc >> docker cp /path/dvdrental.tar  postgresCont:/home/dvdrental.tar
-mypc >> docker exec -it postgresCont bash
+mypc >> docker run --name postgres-cont -p 5432:5432 -e POSTGRES_PASSWORD=12345 -d postgres
+mypc >> docker cp /path/sampledb.tar  postgres-cont:/home/
+mypc >> docker exec -it postgres-cont bash
 
 
-container=#  psql --username=postgres (--host=localhost --port=5432 --dbname=dvdrental)
+container=#  psql --username=postgres (--host=localhost --port=5432 --dbname=sampledb)
 
 
-postgres=#   CREATE DATABASE dvdrental;
+postgres=#   CREATE DATABASE sampledb;
 postgres=#   exit
 
-container=#  pg_restore --username=postgres --dbname=dvdrental --verbose '/home/dvdrental.tar'
-container=#  rm -rf /home/dvdrental.tar
+container=#  pg_restore --username=postgres --dbname=sampledb --verbose '/home/sampledb.tar'
+container=#  rm -rf /home/sampledb.tar
 
 container=#  psql --username=postgres
 
 
 postgres=#   \l
 
-postgres=#   \c dvdrental
+postgres=#   \c sampledb
 
-dvdrental=#  \dt (\dt+)
+sampledb=#  \dt (\dt+)
 
 
-dvdrental=#  \! clear
+sampledb=#  \! clear

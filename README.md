@@ -2,23 +2,23 @@
 
 ## Database creating and restoring with Docker
 
-mypc >> docker run --name postgresCont -p 5432:5432 -e POSTGRES_PASSWORD=12345 -d postgres
+mypc >> docker run --name postgres-cont -p 5432:5432 -e POSTGRES_PASSWORD=12345 -d postgres
 
 <br/>
 
-mypc >> docker cp /path/mytestDb.tar postgresCont:/home/mytestDb.tar
+mypc >> docker cp /path/mytestdb.tar postgres-cont:/home/
 
 <br/>
 
-mypc >> docker exec -it postgresCont bash
+mypc >> docker exec -it postgres-cont bash
 
 <hr/>
 
-container=# psql --username=postgres (--host=localhost --port=5432 --dbname=mytestDb)
+container=# psql --username=postgres (--host=localhost --port=5432 --dbname=mytestdb)
 
 <hr/>
 
-postgres=# CREATE DATABASE mytestDb;
+postgres=# CREATE DATABASE mytestdb;
 
 <br/>
 
@@ -26,11 +26,11 @@ postgres=# exit
 
 <hr/>
 
-container=# pg_restore --username=postgres --dbname=mytestDb --verbose '/home/mytestDb.tar'
+container=# pg_restore --username=postgres --dbname=mytestdb --verbose '/home/mytestdb.tar'
 
 <br/>
 
-container=# rm -rf /home/mytestDb.tar
+container=# rm -rf /home/mytestdb.tar
 
 <br/>
 
@@ -42,12 +42,12 @@ postgres=# \l
 
 <br/>
 
-postgres=# \c mytestDb
+postgres=# \c mytestdb
 
 <br/>
 
-mytestDb=# \dt (\dt+)
+mytestdb=# \dt (\dt+)
 
 <br/>
 
-mytestDb=# \! clear
+mytestdb=# \! clear
