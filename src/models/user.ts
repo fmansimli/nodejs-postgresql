@@ -1,9 +1,8 @@
-import { ObjectId } from "mongodb";
 import { MyDatabase } from "../config";
-import { CollectionNames, Role } from "../enums";
+import { Role } from "../enums";
 
 export class User implements IUser {
-  public _id?: ObjectId;
+  public _id?: string;
   public sid?: string;
   public username: string;
   public password: string;
@@ -11,8 +10,8 @@ export class User implements IUser {
   public emailVerified;
   public name: string;
   public surname: string;
-  public followers: ObjectId[];
-  public followings: ObjectId[];
+  public followers: [];
+  public followings: [];
   public provider: Provider;
   public imageUrl?: string;
   public blocked: boolean;
@@ -24,9 +23,9 @@ export class User implements IUser {
   public instagram?: string;
   public dateOfBirth?: Date;
 
-  public favoritePlaces: ObjectId[];
-  public favoriteTripes: ObjectId[];
-  public activeTripes: ObjectId[];
+  public favoritePlaces: [];
+  public favoriteTripes: [];
+  public activeTripes: [];
 
   public readonly createdAt: Date = new Date();
   public updatedAt: Date;
@@ -58,7 +57,7 @@ export class User implements IUser {
   }
 
   static exec() {
-    return MyDatabase.getDb().collection(CollectionNames.USERS);
+    return MyDatabase.getDb();
   }
 
   static close() {
@@ -67,7 +66,7 @@ export class User implements IUser {
 }
 
 export interface IUser {
-  _id?: ObjectId;
+  _id?: string;
   sid?: string;
   username: string;
   password: string;
@@ -75,11 +74,11 @@ export interface IUser {
   emailVerified: boolean;
   name: string;
   surname: string;
-  followers: ObjectId[];
-  followings: ObjectId[];
-  favoritePlaces: ObjectId[];
-  favoriteTripes: ObjectId[];
-  activeTripes: ObjectId[];
+  followers: [];
+  followings: [];
+  favoritePlaces: [];
+  favoriteTripes: [];
+  activeTripes: [];
   provider: Provider;
   isActive: boolean;
   blocked: boolean;

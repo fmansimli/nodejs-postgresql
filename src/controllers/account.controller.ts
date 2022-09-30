@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { IUser, ObjectId, User } from "../models";
+import { IUser, User } from "../models";
 import { SessionManager } from "../services";
 import { Parser } from "../utils";
 
@@ -7,9 +7,9 @@ export const getProfile: RequestHandler = async (req: any, res, next) => {
   const { fields } = req.query;
   const projection = Parser.project(fields as string);
   try {
-    const _id = new ObjectId(req.user._id);
+    const _id = req.user._id;
 
-    const user = await User.exec().findOne({ _id }, { projection });
+    const user = {};
 
     res.status(200).json({
       body: { user },
@@ -26,17 +26,16 @@ export const getProfile: RequestHandler = async (req: any, res, next) => {
 export const updateProfile: RequestHandler = async (req: any, res, next) => {
   const body = req.body as IUser;
   try {
-    const _id = new ObjectId(req.user._id);
+    const _id = req.user._id;
 
-    const data = await User.exec().updateOne({ _id }, { $set: body });
     body._id = _id;
 
     res.status(200).json({
-      body: { user: data.matchedCount ? body : undefined },
+      body: { user: body },
       meta: {
         url: req.originalUrl,
-        ok: data.acknowledged,
-        effected: data.modifiedCount,
+        ok: true,
+        effected: 1,
       },
     });
   } catch (error) {
@@ -46,15 +45,13 @@ export const updateProfile: RequestHandler = async (req: any, res, next) => {
 
 export const deleteProfile: RequestHandler = async (req: any, res, next) => {
   try {
-    const _id = new ObjectId(req.user._id);
-
-    const data = await User.exec().deleteOne({ _id });
+    const _id = req.user._id;
 
     res.status(200).json({
       meta: {
         url: req.originalUrl,
-        ok: data.acknowledged,
-        effected: data.deletedCount,
+        ok: true,
+        effected: 1,
       },
     });
   } catch (error) {

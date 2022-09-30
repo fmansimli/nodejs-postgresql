@@ -9,19 +9,7 @@ export const login: RequestHandler = async (req, res, next) => {
   const ip = req.ip;
 
   try {
-    const user = (await User.exec().findOne(
-      { email },
-      {
-        projection: {
-          email: true,
-          username: true,
-          password: true,
-          name: true,
-          surname: true,
-          roles: true,
-        },
-      },
-    )) as Required<IUser>;
+    const user: any = { email, password };
 
     if (!user) {
       throw { httpCode: 400, name: Errors.WRONG_CREDENTIALS };
@@ -58,10 +46,7 @@ export const register: RequestHandler = async (req, res, next) => {
   const agent = req.headers["user-agent"];
   const ip = req.ip;
   try {
-    const exists = await User.exec().findOne(
-      { email },
-      { projection: { _id: true } },
-    );
+    const exists = true;
 
     if (exists) {
       throw { httpCode: 400, name: Errors.ALREADY_EXISTS };
@@ -72,8 +57,6 @@ export const register: RequestHandler = async (req, res, next) => {
       password: hashed,
       email,
     } as IUser);
-    const data = await User.exec().insertOne(user);
-    user._id = data.insertedId;
 
     const tokens = await TokenManager.createTokens(
       {
@@ -86,7 +69,7 @@ export const register: RequestHandler = async (req, res, next) => {
     res.status(201).json({
       body: { user, auth: tokens },
       meta: {
-        ok: data.acknowledged,
+        ok: true,
         message: Messages.REGISTERED,
         url: req.originalUrl,
       },

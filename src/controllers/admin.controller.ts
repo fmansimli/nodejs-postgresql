@@ -11,11 +11,11 @@ export const dropDatabase: RequestHandler = async (req, res, next) => {
     if (!canBeRemoved) {
       throw { httpCode: 403, name: Errors.ONLY_FOR_TEST };
     }
-    const db = MyDatabase.getDb();
-    await db.dropDatabase();
+
+    await MyDatabase.dropDatabase(req.body.name);
 
     res.status(200).json({
-      meta: { httpCode: 200, message: Messages.DATABASE_DROPPED },
+      meta: { httpCode: 200, message: Messages.DATABASE_DROPPED, ok: true },
     });
   } catch (error) {
     next(error);
@@ -31,11 +31,11 @@ export const dropColl: RequestHandler = async (req, res, next) => {
     if (!canBeRemoved) {
       throw { httpCode: 403, name: Errors.ONLY_FOR_TEST };
     }
-    const db = MyDatabase.getDb();
-    const resp = await db.dropCollection(req.body.name);
+
+    await MyDatabase.dropTable(req.body.name);
 
     res.status(200).json({
-      meta: { httpCode: 200, message: Messages.COLLECTION_DROPPED, ok: resp },
+      meta: { httpCode: 200, message: Messages.TABLE_DROPPED, ok: true },
     });
   } catch (error) {
     next(error);
@@ -43,8 +43,6 @@ export const dropColl: RequestHandler = async (req, res, next) => {
 };
 
 export const createIndex: RequestHandler = async (req, res, next) => {
-  const { collection, ...rest } = req.body;
-
   const dbname = process.env.DB_NAME;
   const env = process.env.NODE_ENV;
   const canBeRemoved = dbname === "mooveTest" && env === "test";
@@ -53,11 +51,10 @@ export const createIndex: RequestHandler = async (req, res, next) => {
     if (!canBeRemoved) {
       throw { httpCode: 403, name: Errors.ONLY_FOR_TEST };
     }
-    const db = MyDatabase.getDb();
-    await db.collection(collection).createIndex(rest);
+    await MyDatabase.createIndex(req.body);
 
     res.status(200).json({
-      meta: { httpCode: 200, message: Messages.INDEX_CREATED },
+      meta: { httpCode: 200, message: Messages.INDEX_CREATED, ok: true },
     });
   } catch (error) {
     next(error);
