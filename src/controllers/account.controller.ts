@@ -1,13 +1,12 @@
 import { RequestHandler } from "express";
-import { IUser, User } from "../models";
-import { SessionManager } from "../services";
+import { IUser, User, Session } from "../models";
 import { Parser } from "../utils";
 
 export const getProfile: RequestHandler = async (req: any, res, next) => {
   const { fields } = req.query;
   const projection = Parser.project(fields as string);
   try {
-    const _id = req.user._id;
+    const id = req.user.id;
 
     const user = {};
 
@@ -26,9 +25,9 @@ export const getProfile: RequestHandler = async (req: any, res, next) => {
 export const updateProfile: RequestHandler = async (req: any, res, next) => {
   const body = req.body as IUser;
   try {
-    const _id = req.user._id;
+    const id = req.user.id;
 
-    body._id = _id;
+    body.id = id;
 
     res.status(200).json({
       body: { user: body },
@@ -45,7 +44,7 @@ export const updateProfile: RequestHandler = async (req: any, res, next) => {
 
 export const deleteProfile: RequestHandler = async (req: any, res, next) => {
   try {
-    const _id = req.user._id;
+    const id = req.user.id;
 
     res.status(200).json({
       meta: {
@@ -61,7 +60,7 @@ export const deleteProfile: RequestHandler = async (req: any, res, next) => {
 
 export const logout: RequestHandler = async (req: any, res, next) => {
   try {
-    await SessionManager.delSession(req.user._id, req.user.tid);
+    await Session.delete(req.user.id, req.user.tid);
     res.status(200).json({
       meta: {
         url: req.originalUrl,
@@ -75,7 +74,7 @@ export const logout: RequestHandler = async (req: any, res, next) => {
 
 export const getSessions: RequestHandler = async (req: any, res, next) => {
   try {
-    const sessions = await SessionManager.getSessions(req.user._id);
+    const sessions = await Session.getAll(req.user.id);
     res.status(200).json({
       body: { sessions, all: sessions.length },
       meta: {
@@ -90,7 +89,7 @@ export const getSessions: RequestHandler = async (req: any, res, next) => {
 
 export const getSession: RequestHandler = async (req: any, res, next) => {
   try {
-    const session = await SessionManager.getSession(req.user._id, req.user.tid);
+    const session = await Session.getSession(req.user.id, req.user.tid);
     res.status(200).json({
       body: { session },
       meta: {
@@ -106,7 +105,7 @@ export const getSession: RequestHandler = async (req: any, res, next) => {
 export const getSessionById: RequestHandler = async (req: any, res, next) => {
   const id = req.params.id;
   try {
-    const session = await SessionManager.getSession(req.user._id, id);
+    const session = await Session.getSession(req.user.id, id);
     res.status(200).json({
       body: { session },
       meta: {
@@ -121,7 +120,7 @@ export const getSessionById: RequestHandler = async (req: any, res, next) => {
 
 export const delSession: RequestHandler = async (req: any, res, next) => {
   try {
-    await SessionManager.delSession(req.user._id, req.params.id);
+    await Session.delete(req.user.id, req.params.id);
     res.status(200).json({
       meta: {
         url: req.originalUrl,
@@ -135,7 +134,7 @@ export const delSession: RequestHandler = async (req: any, res, next) => {
 
 export const flushAllSession: RequestHandler = async (req: any, res, next) => {
   try {
-    await SessionManager.flushAll(req.user._id);
+    await Session.flushAll(req.user.id);
     res.status(200).json({
       meta: {
         url: req.originalUrl,
@@ -149,7 +148,7 @@ export const flushAllSession: RequestHandler = async (req: any, res, next) => {
 
 export const logoutOthers: RequestHandler = async (req: any, res, next) => {
   try {
-    await SessionManager.logoutOthers(req.user._id, req.user.tid);
+    await Session.logoutOthers(req.user.id, req.user.tid);
     res.status(200).json({
       meta: {
         url: req.originalUrl,

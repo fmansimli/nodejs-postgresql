@@ -1,11 +1,33 @@
 import Redis from "../redis/client";
-import { ISession } from "../interfaces/auth";
 import { RedisKeys } from "../enums";
 
 const redis = Redis.getClient();
 
-export class SessionManager {
-  static async delSession(userId: string, tokenId: string) {
+export class Session implements ISession {
+  uid: string;
+  tid: string;
+  agent?: string;
+  ip?: string;
+  iat?: number;
+  exp?: number;
+  deviceName?: string;
+  deviceId?: string;
+  location?: string;
+  info?: string;
+
+  constructor(s: ISession) {
+    this.uid = s.uid;
+    this.tid = s.tid;
+    this.agent = s.agent;
+    this.ip = s.ip;
+    this.iat = s.iat;
+    this.exp = s.exp;
+    this.deviceId = s.deviceId;
+    this.location = s.location;
+    this.info = s.info;
+  }
+
+  static async delete(userId: string, tokenId: string) {
     const data = await redis.hGet(userId, RedisKeys.SESSIONS);
     if (data) {
       const sessions = JSON.parse(data);
@@ -28,7 +50,7 @@ export class SessionManager {
     }
   }
 
-  static async getSessions(userId: string) {
+  static async getAll(userId: string) {
     const data = await redis.hGet(userId, RedisKeys.SESSIONS);
     if (data) return JSON.parse(data);
     return [];
@@ -43,23 +65,40 @@ export class SessionManager {
     return null;
   }
 
-  static async addToken(uid: string, session: ISession) {
-    const data = await redis.hGet(uid, RedisKeys.SESSIONS);
+  async save() {
+    const data = await redis.hGet(this.uid, RedisKeys.SESSIONS);
     if (data) {
       const mysessions = JSON.parse(data) as ISession[];
-      mysessions.push(session);
-      await redis.hSet(uid, RedisKeys.SESSIONS, JSON.stringify(mysessions));
+      mysessions.push(this);
+      await redis.hSet(
+        this.uid,
+        RedisKeys.SESSIONS,
+        JSON.stringify(mysessions),
+      );
     } else {
-      await redis.hSet(uid, RedisKeys.SESSIONS, JSON.stringify([session]));
+      await redis.hSet(this.uid, RedisKeys.SESSIONS, JSON.stringify([this]));
     }
   }
 
-  static async checkTokenId(userId: string, tokenId: string) {
-    const data = await redis.hGet(userId, RedisKeys.SESSIONS);
+  static async checkTokenId(uid: string, tokenId: string) {
+    const data = await redis.hGet(uid, RedisKeys.SESSIONS);
     if (data) {
       const sessions = JSON.parse(data);
       return sessions.some((session: ISession) => session.tid === tokenId);
     }
     return false;
   }
+}
+
+export interface ISession {
+  uid: string;
+  tid: string;
+  agent?: string;
+  ip?: string;
+  iat?: number;
+  exp?: number;
+  deviceName?: string;
+  deviceId?: string;
+  location?: string;
+  info?: string;
 }

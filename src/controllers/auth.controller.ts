@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { IUser, User } from "../models";
+import { IUser, Session, User } from "../models";
 import { TokenManager, Password } from "../utils";
 import { Errors, Messages } from "../enums";
 
@@ -9,7 +9,7 @@ export const login: RequestHandler = async (req, res, next) => {
   const ip = req.ip;
 
   try {
-    const user: any = { email, password };
+    const user: any = { email, password, id: 1 };
 
     if (!user) {
       throw { httpCode: 400, name: Errors.WRONG_CREDENTIALS };
@@ -20,13 +20,11 @@ export const login: RequestHandler = async (req, res, next) => {
 
     const { password: _pwd, ...others } = user;
 
-    const tokens = await TokenManager.createTokens(
-      {
-        _id: user._id,
-        roles: user.roles,
-      },
-      { agent, ip },
-    );
+    const payload = { id: user.id, roles: user.roles };
+    const { extra, ...tokens } = await TokenManager.createTokens(payload);
+
+    const session = new Session({ uid: user.id, ip, agent, ...extra });
+    await session.save();
 
     res.status(200).json({
       body: { user: others, auth: tokens },
@@ -52,19 +50,13 @@ export const register: RequestHandler = async (req, res, next) => {
       throw { httpCode: 400, name: Errors.ALREADY_EXISTS };
     }
     const hashed = await Password.toHash(password);
-    const user = new User({
-      username,
-      password: hashed,
-      email,
-    } as IUser);
+    const user = { id: "1", username, password: hashed, email };
 
-    const tokens = await TokenManager.createTokens(
-      {
-        _id: user._id,
-        roles: user.roles,
-      },
-      { agent, ip },
-    );
+    const payload = { id: user.id, roles: [] };
+    const { extra, ...tokens } = await TokenManager.createTokens(payload);
+
+    const session = new Session({ uid: user.id, ip, agent, ...extra });
+    await session.save();
 
     res.status(201).json({
       body: { user, auth: tokens },

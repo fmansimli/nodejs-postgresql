@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { MyDatabase } from "../config";
+import { Db } from "../config";
 import { Errors, Messages } from "../enums";
 
 export const dropDatabase: RequestHandler = async (req, res, next) => {
@@ -12,7 +12,7 @@ export const dropDatabase: RequestHandler = async (req, res, next) => {
       throw { httpCode: 403, name: Errors.ONLY_FOR_TEST };
     }
 
-    await MyDatabase.dropDatabase(req.body.name);
+    await Db.dropDatabase(req.body.name);
 
     res.status(200).json({
       meta: { httpCode: 200, message: Messages.DATABASE_DROPPED, ok: true },
@@ -32,7 +32,7 @@ export const dropColl: RequestHandler = async (req, res, next) => {
       throw { httpCode: 403, name: Errors.ONLY_FOR_TEST };
     }
 
-    await MyDatabase.dropTable(req.body.name);
+    await Db.dropTable(req.body.name);
 
     res.status(200).json({
       meta: { httpCode: 200, message: Messages.TABLE_DROPPED, ok: true },
@@ -51,7 +51,7 @@ export const createIndex: RequestHandler = async (req, res, next) => {
     if (!canBeRemoved) {
       throw { httpCode: 403, name: Errors.ONLY_FOR_TEST };
     }
-    await MyDatabase.createIndex(req.body);
+    await Db.createIndex(req.body);
 
     res.status(200).json({
       meta: { httpCode: 200, message: Messages.INDEX_CREATED, ok: true },

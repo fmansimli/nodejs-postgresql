@@ -1,7 +1,7 @@
 import { Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 import { Role, Errors } from "../enums";
-import { SessionManager } from "../services";
+import { Session } from "../models";
 
 const secret = process.env.JWT_SECRET as string;
 
@@ -11,11 +11,11 @@ export class Access {
       const token = req.headers.authorization?.split(" ")[1];
       try {
         if (token) {
-          const { _id, tid, roles = [] }: any = verify(token, secret);
+          const { id, tid, roles = [] }: any = verify(token, secret);
           if (roles.includes(role)) {
-            const exists = await SessionManager.checkTokenId(_id, tid);
+            const exists = await Session.checkTokenId(id, tid);
             if (exists) {
-              req.user = { _id, tid, roles };
+              req.user = { id, tid, roles };
               return next();
             }
           } else {

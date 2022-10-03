@@ -1,2 +1,2 @@
 export { IPoint, IPolygon } from "./map";
-export { ISession } from "./auth";
+export {} from "./auth";
