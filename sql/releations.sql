@@ -101,6 +101,22 @@ CREATE TABLE IF NOT EXISTS users_projects (
 -- );
 
 
+
+-- CREATE VIEW recent_posts AS (
+--     SELECT title, userId 
+--     FROM posts 
+--     ORDER BY createdAt LIMIT 10
+-- );
+
+-- CREATE OR REPLACE VIEW recent_posts AS (
+--     SELECT title, userId 
+--     FROM posts 
+--     ORDER BY createdAt DESC LIMIT 15
+-- );
+
+-- DROP VIEW recent_posts;
+
+
 -- SHOW data_directory;
 
 
