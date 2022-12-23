@@ -12,6 +12,13 @@ CREATE TABLE IF NOT EXISTS teams (
 
 CREATE TYPE USER_STATUS_TYPE AS ENUM("blocked","active","deactive");
 
+CREATE TABLE IF NOT EXISTS companies (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    lat REAL CHECK(lat is NULL OR (lat >=-90 AND lat <=90)),
+    lng REAL CHECK(lng is NULL OR (lng >=-180 AND lng <=180))
+);
+
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     firstName VARCHAR(100) NOT NULL,
@@ -27,7 +34,8 @@ CREATE TABLE IF NOT EXISTS users(
     salary NUMERIC(6,2) NOT NULL, -- DECIMAL , NUMERIC --> 1234.56
     yearlySalary FLOAT NOT NULL, -- REAL , DOUBLE , FLOAT --> FLOAT(5,2) --> 123.45
     status USER_STATUS_TYPE,
-    CHECK (yearlySalary > salary)
+    CHECK (yearlySalary > salary),
+    CHECK (COAlESCE(email,phone) IS NOT NULL)
 );
 
 CREATE TABLE IF NOT EXISTS accounts (
