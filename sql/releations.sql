@@ -89,3 +89,13 @@ CREATE TABLE IF NOT EXISTS users_projects (
     PRIMARY KEY (userId,projectId),
 );
 
+
+-- CREATE TABLE IF NOT EXISTS likes (
+--     id SERIAL PRIMARY KEY,
+--     createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+--     userId INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+--     postId INT NOT NULL REFERENCES posts (id) ON DELETE CASCADE,
+--     commentId INT NOT NULL REFERENCES posts (id) ON DELETE CASCADE,
+--     CHECK (COAlESCE((postId)::BOOLEAN::INTEGER, 0) + COAlESCE((commentId)::BOOLEAN::INTEGER, 0) = 1)
+-- );
+
