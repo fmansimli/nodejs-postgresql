@@ -100,3 +100,21 @@ CREATE TABLE IF NOT EXISTS users_projects (
 --     UNIQUE (userId, postId, commentId)
 -- );
 
+
+-- SHOW data_directory;
+
+
+-- SELECT oid, datname from pg_database;
+-- SELECT * FROM pg_class;
+-- SELECT relname, relkind from pg_class WHERE relkind='i';
+
+
+-- SELECT pg_size_pretty(pg_relation_size('users'));
+-- SELECT pg_size_pretty(pg_relation_size('users_username_idx'));
+
+
+-- CREATE INDEX ON users (username);
+-- DROP INDEX users_username_idx;
+
+
+-- EXPLAIN ANALYZE SELECT * FROM users WHERE username='Farid';
