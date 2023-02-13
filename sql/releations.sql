@@ -145,7 +145,10 @@ CREATE TABLE IF NOT EXISTS users_projects (
 -- SELECT pg_size_pretty(pg_relation_size('users_username_idx'));
 
 
--- CREATE INDEX ON users (username);
+-- column index, multi-column index, unique index, partial index
+
+-- CREATE INDEX username_idx ON users (username);
+-- CREATE UNIQUE INDEX username_idx ON users (username);
 -- DROP INDEX users_username_idx;
 
 
