@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS mydb;
+CREATE DATABASE mydb;
 
 
 CREATE TABLE IF NOT EXISTS teams (
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS users(
     teamId INT NOT NULL REFERENCES teams(id) ON DELETE SET NULL,
     isActive BOOLEAN DEFAULT TRUE,
     rate SMALLINT NOT NULL CHECK (rate >= 0 AND rate <= 10),
-    salary NUMERIC(6,2) NOT NULL, -- DECIMAL , NUMERIC --> 1234.56
-    yearlySalary FLOAT NOT NULL, -- REAL , DOUBLE , FLOAT --> FLOAT(5,2) --> 123.45
+    salary NUMERIC(6,2) NOT NULL,                               -- DECIMAL , NUMERIC --> 1234.56
+    yearlySalary FLOAT NOT NULL,                                -- REAL , DOUBLE , FLOAT --> FLOAT(5,2) --> 123.45
     status USER_STATUS_TYPE,
     CHECK (yearlySalary > salary),
     CHECK (COAlESCE(email,phone) IS NOT NULL)
@@ -99,6 +99,22 @@ CREATE TABLE IF NOT EXISTS users_projects (
 --     CHECK (COAlESCE((postId)::BOOLEAN::INTEGER, 0) + COAlESCE((commentId)::BOOLEAN::INTEGER, 0) = 1),
 --     UNIQUE (userId, postId, commentId)
 -- );
+
+
+-- SELECT booking_date, amount_tipped, SUM(amount_tipped) OVER ()
+-- FROM bookings;
+
+-- SELECT booking_date, amount_tipped, SUM(amount_tipped) OVER (PARTITION BY booking_date)
+-- FROM bookings;
+
+-- SELECT booking_date, amount_tipped, SUM(amount_tipped) OVER (PARTITION BY booking_date ORDER BY amount_billed ASC)
+-- FROM bookings;
+
+
+-- BEGIN;
+-- COMMIT;
+-- ROLLBACK;
+
 
 
 
