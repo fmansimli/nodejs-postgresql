@@ -55,7 +55,13 @@ mytestdb=# \! clear
 <br/>
 <br/>
 
+```sql
 SELECT pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
-WHERE pg_stat_activity.datname = 'mydatabase'
-AND pid <> pg_backend_pid();
+WHERE pg_stat_activity.datname = 'mydatabase' AND pid <> pg_backend_pid();
+```
+
+```sql
+SELECT * FROM information_schema.tables
+WHERE table_schema = 'public' AND table_type = 'BASE TABLE';
+```
