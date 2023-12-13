@@ -1,4 +1,4 @@
-# Restring
+# Restoring
 
 ## Database creating and restoring with Docker
 
