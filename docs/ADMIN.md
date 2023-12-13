@@ -2,19 +2,19 @@
 
 ## >>
 
-### showing Data directory (bash)
+### showing Data directory
 
-```bash
+```sql
 SHOW data_directory;
 ```
 
-### ??????
+### showing which folder each database files get stored in
 
 ```sql
 SELECT oid, datname from pg_database;
 ```
 
-### ?????
+### showing which file each object (tables,indexes etc) get stored inside data_directory
 
 ```sql
 SELECT * FROM pg_class;
