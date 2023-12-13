@@ -1,7 +1,7 @@
 {
   "name": "nodejs-postgres",
   "version": "1.0.0",
-  "description": "this is nodejs, express app with typescript",
+  "description": "expressjs app with typescript",
   "main": "server.js",
   "scripts": {
     "git": "git add . && git commit -m \"$npm_package_name ($npm_package_version) ## $(date) ## \" && git push origin master",
@@ -16,13 +16,8 @@
     "env": "export NODE_ENV=production",
     "start": "yarn clean-dist && tsc && yarn serve",
     "start:pm2": "yarn clean-dist && tsc && yarn remove-dev && yarn serve:pm2",
-    "build-image": "yarn clean-dist && tsc && yarn remove-dev",
     "test": "vitest",
-    "pm2:stop": "pm2 list",
-    "remove-dev-libs": "yarn remove nodemon supertest ts-node typescript vitest",
-    "remove-dev-types": "yarn remove @types/cors @types/express @types/jsonwebtoken @types/morgan  @types/supertest",
-    "remove-dev-eslint": "yarn remove eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser @types/node",
-    "remove-dev": "yarn remove-dev-libs && yarn remove-dev-types && yarn remove-dev-eslint"
+    "pm2:stop": "pm2 list"
   },
   "keywords": [
     "typescript",
